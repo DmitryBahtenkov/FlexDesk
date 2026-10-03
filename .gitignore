@@ -1,0 +1,16 @@
+# Build output
+bin/
+obj/
+
+# Local SQLite database and uploaded files
+*.db
+*.db-journal
+src/Helpdesk/uploads/
+
+# Local environment overrides
+.env
+
+# IDE
+.idea/
+.vs/
+*.user

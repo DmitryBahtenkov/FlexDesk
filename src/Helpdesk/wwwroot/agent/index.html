@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Panel</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="main-header">
+      <a class="logo" href="/agent">FlexDesk</a>
+      <nav class="navbar">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Toggle sidebar">
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor" aria-hidden="true"><path d="M0 0h18v2H0zm0 6h18v2H0zm0 6h18v2H0z"/></svg>
+        </button>
+        <ul class="navbar-menu">
+          <li>
+            <span class="user-chip">
+              <span class="avatar" id="header-avatar">A</span>
+              <span id="header-username">Agent</span>
+            </span>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <aside class="main-sidebar">
+      <section class="sidebar">
+        <div class="user-panel">
+          <span class="avatar avatar-lg" id="sidebar-avatar">A</span>
+          <div>
+            <p class="name">Hello, <span id="sidebar-username">Agent</span></p>
+            <span class="online">Online</span>
+          </div>
+        </div>
+        <div class="sidebar-form">
+          <input id="ticket-search" type="search" placeholder="Search..." />
+        </div>
+        <ul class="sidebar-menu">
+          <li class="active" data-view="dashboard">
+            <a href="#dashboard">
+              <svg class="menu-ico" viewBox="0 0 16 16"><path d="M0 0h7v7H0zm9 0h7v4H9zM0 9h7v7H0zm9-3h7v10H9z"/></svg>
+              <span class="menu-label">Dashboard</span>
+            </a>
+          </li>
+          <li data-view="create">
+            <a href="#create">
+              <svg class="menu-ico" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m1 8V4H7v4H3v2h4v4h2v-4h4V8z"/></svg>
+              <span class="menu-label">Create Ticket</span>
+            </a>
+          </li>
+          <li class="agent-only" data-view="tickets" data-scroll="tickets-box">
+            <a href="#tickets-box">
+              <svg class="menu-ico" viewBox="0 0 16 16"><path d="M0 1h16v3H0zm0 5h16v3H0zm0 5h16v4H0z"/></svg>
+              <span class="menu-label">Ticket List</span>
+              <span class="menu-badge red" id="badge-tickets">0</span>
+            </a>
+          </li>
+          <li class="agent-only" data-view="api-keys">
+            <a href="#api-keys">
+              <svg class="menu-ico" viewBox="0 0 16 16"><path d="M10 2a4 4 0 0 0-3.87 5H1v2h2v4h2V9h1.13A4 4 0 1 0 10 2m0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4"/></svg>
+              <span class="menu-label">API Keys</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" id="logout">
+              <svg class="menu-ico" viewBox="0 0 16 16"><path d="M6 2h8v12H6v-2h6V4H6zM7 7H0v2h7v3l5-4-5-4z"/></svg>
+              <span class="menu-label">Sign out</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </aside>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <h1 id="page-title">Dashboard</h1>
+        <ol class="breadcrumb">
+          <li>FlexDesk</li>
+          <li class="active" id="breadcrumb-current">Dashboard</li>
+        </ol>
+      </section>
+
+      <section class="content" id="view-dashboard">
+        <div class="small-boxes small-boxes-2 agent-only">
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3 id="stat-incoming">0</h3>
+              <p>Incoming tickets</p>
+            </div>
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+            </div>
+            <a href="#tickets-box" class="small-box-footer">Go to →</a>
+          </div>
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3 id="stat-outgoing">0</h3>
+              <p>Total tickets</p>
+            </div>
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M5 4h14v2H5V4zm0 14h14v2H5v-2zM9 9h6v6H9z"/></svg>
+            </div>
+            <a href="#tickets-box" class="small-box-footer">Go to →</a>
+          </div>
+        </div>
+
+        <div class="box box-primary agent-only" id="tickets-box">
+          <div class="box-header">
+            <h3 class="box-title">Latest incoming tickets</h3>
+          </div>
+          <div class="box-body table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Subject</th>
+                  <th>Created</th>
+                  <th>Status</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody id="list"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="content" id="view-create" hidden>
+        <div class="box box-primary" style="max-width:640px">
+          <div class="box-header"><h3 class="box-title">Create Ticket</h3></div>
+          <div class="box-body">
+            <form id="ticket-form">
+              <div class="form-row">
+                <label for="ticket-subject">Subject</label>
+                <input id="ticket-subject" required placeholder="Short summary" />
+              </div>
+              <div class="form-row">
+                <label for="ticket-body">Description</label>
+                <textarea id="ticket-body" required placeholder="Describe the issue"></textarea>
+              </div>
+              <button type="submit" class="btn">Submit ticket</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="content" id="view-api-keys" hidden>
+        <div class="box box-primary agent-only" style="max-width:640px">
+          <div class="box-header"><h3 class="box-title">Partner API keys</h3></div>
+          <div class="box-body">
+            <p class="muted">For public OpenAPI integrations. Send as <code>X-Api-Key</code>.</p>
+            <div class="form-row">
+              <label>Helpdesk API key</label>
+              <code class="key-display" id="api-key-value"></code>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/agent/app.js"></script>
+</body>
+</html>

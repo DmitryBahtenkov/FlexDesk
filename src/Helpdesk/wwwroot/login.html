@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Helpdesk Login</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="auth-page">
+  <div class="auth-box">
+    <h1 class="auth-logo">Tech<span>Corp</span></h1>
+    <div class="auth-card">
+      <p class="auth-msg">Agent Login</p>
+      <form id="login-form">
+        <div class="field">
+          <input id="username" placeholder="username" autocomplete="username" />
+        </div>
+        <div class="field">
+          <input id="password" type="password" placeholder="password" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-block">Log in</button>
+      </form>
+      <p id="error" class="auth-error"></p>
+    </div>
+    <p class="auth-foot">Powered by FlexDesk v1.4.2</p>
+  </div>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      if (!res.ok) {
+        document.getElementById('error').textContent = 'Login failed';
+        return;
+      }
+      const { token } = await res.json();
+      localStorage.setItem('hd_token', token);
+      location.href = '/agent';
+    });
+  </script>
+</body>
+</html>

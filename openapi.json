@@ -1,0 +1,89 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "FlexDesk API", "version": "1.0.0" },
+  "paths": {
+    "/api/v1/tickets": {
+      "get": {
+        "summary": "List tickets",
+        "security": [ { "ApiKeyAuth": [] } ],
+        "responses": { "200": { "description": "Ticket list" }, "401": { "description": "Missing or invalid API key" } }
+      },
+      "post": {
+        "summary": "Create ticket",
+        "security": [ { "ApiKeyAuth": [] } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["subject", "body"],
+                "properties": {
+                  "subject": { "type": "string" },
+                  "body": { "type": "string" },
+                  "status": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Invalid body" }, "401": { "description": "Missing or invalid API key" } }
+      }
+    },
+    "/api/v1/tickets/{id}": {
+      "get": {
+        "summary": "Get ticket",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "security": [ { "ApiKeyAuth": [] } ],
+        "responses": { "200": { "description": "Ticket" }, "401": { "description": "Missing or invalid API key" }, "404": { "description": "Not found" } }
+      },
+      "patch": {
+        "summary": "Update ticket",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "security": [ { "ApiKeyAuth": [] } ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subject": { "type": "string" },
+                  "body": { "type": "string" },
+                  "status": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Updated" }, "401": { "description": "Missing or invalid API key" }, "404": { "description": "Not found" } }
+      },
+      "delete": {
+        "summary": "Delete ticket",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "security": [ { "ApiKeyAuth": [] } ],
+        "responses": { "204": { "description": "Deleted" }, "401": { "description": "Missing or invalid API key" }, "404": { "description": "Not found" } }
+      }
+    },
+    "/api/v1/tickets/{id}/attachments/download": {
+      "get": {
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } },
+          { "name": "path", "in": "query", "required": true, "schema": { "type": "string" } }
+        ],
+        "security": [ { "ApiKeyAuth": [] } ],
+        "responses": { "200": { "description": "File contents" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "X-Api-Key" }
+    }
+  }
+}
